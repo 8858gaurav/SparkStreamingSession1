@@ -13,6 +13,8 @@ if __name__ == '__main__':
             # since the group by will create a 200 shuffle partitons.
             # to reduce the time, it's better to decrease the no of partitons, when 
             # we have a large no of micro batches with smalll-2 sizes. 
+
+            # Now adding the file 1 by 1 from temp folder to input dir
     
 # 1. read the data
     order_schema = 'order_id long, order_date date, order_customer_id long, order_status string'
