@@ -1,6 +1,7 @@
 from pyspark.sql.functions import *
 from pyspark.sql import SparkSession
 
+
 if __name__ == '__main__':
     print("creating spark session")
 
