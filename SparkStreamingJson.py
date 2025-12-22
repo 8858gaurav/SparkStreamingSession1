@@ -1,7 +1,6 @@
 from pyspark.sql.functions import *
 from pyspark.sql import SparkSession
 
-
 if __name__ == '__main__':
     print("creating spark session")
 
@@ -22,7 +21,7 @@ if __name__ == '__main__':
             .readStream \
             .format("json") \
             .schema(order_schema) \
-            .option("path", "/Users/gauravmishra/Desktop/UnboundedStreaming/inputdir") \
+            .option("path", "/Users/gauravmishra/Desktop/SparkStreamingSession1/UnboundedStreaming/inputdir/") \
             .load()
     
 
@@ -35,7 +34,7 @@ if __name__ == '__main__':
             .writeStream \
             .format("csv") \
             .outputMode("append") \
-            .option("path","/Users/gauravmishra/Desktop/UnboundedStreaming/outputdir") \
+            .option("path","/Users/gauravmishra/Desktop/SparkStreamingSession1/UnboundedStreaming/outputdir/") \
             .option("checkpointLocation", "checkpointdir1") \
             .start()
 
