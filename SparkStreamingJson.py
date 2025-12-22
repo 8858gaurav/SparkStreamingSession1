@@ -6,6 +6,9 @@ if __name__ == '__main__':
 
     spark = SparkSession.builder \
             .appName("streaming application") \
+            .config("spark.driver.bindAddress", 'localhost') \
+            .config("spark.ui.port", "4050") \
+            .config("spark.driver.port", "4051") \
             .config("spark.sql.shuffle.partitions", 3) \
             .master("local[2]") \
             .getOrCreate()
