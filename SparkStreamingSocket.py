@@ -15,7 +15,7 @@ if __name__ == '__main__':
             # we have a large no of micro batches with smalll-2 sizes. 
     
 # 1. read the data
-
+# in another terminal type nc -lk 9988
     lines = spark \
             .readStream \
             .format("Socket") \
