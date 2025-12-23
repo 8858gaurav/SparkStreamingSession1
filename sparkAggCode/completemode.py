@@ -7,6 +7,9 @@ if __name__ == '__main__':
 
     spark = SparkSession.builder \
             .appName("streaming application") \
+            .config("spark.driver.bindAddress", 'localhost') \
+            .config("spark.ui.port", "4050") \
+            .config("spark.driver.port", "4051") \
             .config("spark.sql.shuffle.partitions", 3) \
             .master("local[2]") \
             .getOrCreate()
@@ -22,7 +25,7 @@ if __name__ == '__main__':
             .readStream \
             .format("json") \
             .schema(order_schema) \
-            .option("path", "/Users/gauravmishra/Desktop/UnboundedStreaming/inputdir") \
+            .option("path", "/Users/gauravmishra/Desktop/SparkStreamingSession1/UnboundedStreaming/inputdir") \
             .load()
     
 
@@ -42,3 +45,56 @@ if __name__ == '__main__':
             .start()
 
     query.awaitTermination()
+
+# {"order_id": 1, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 11599, "order_status": "CLOSED"}
+# {"order_id": 2, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 256, "order_status": "PENDING_PAYMENT"}
+# {"order_id": 3, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 12111, "order_status": "COMPLETE"}
+# {"order_id": 4, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 8827, "order_status": "CLOSED"}
+
+# Batch: 0
+# -------------------------------------------
+# +---------------+-----+
+# |   order_status|total|
+# +---------------+-----+
+# |         CLOSED|    2|
+# |PENDING_PAYMENT|    1|
+# |       COMPLETE|    1|
+# +---------------+-----+
+
+# {"order_id": 5, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 11318, "order_status": "COMPLETE"}
+# {"order_id": 6, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 7130, "order_status": "COMPLETE"}
+# {"order_id": 7, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 4530, "order_status": "COMPLETE"}
+# {"order_id": 8, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 2911, "order_status": "PROCESSING"}
+# {"order_id": 9, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 5657, "order_status": "PENDING_PAYMENT"}
+# {"order_id": 10, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 5648, "order_status": "PENDING_PAYMENT"}
+
+# -------------------------------------------
+# Batch: 1
+# -------------------------------------------
+# +---------------+-----+
+# |   order_status|total|
+# +---------------+-----+
+# |         CLOSED|    2|
+# |PENDING_PAYMENT|    3|
+# |       COMPLETE|    4|
+# |     PROCESSING|    1|
+# +---------------+-----+
+
+# {"order_id": 5, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 11318, "order_status": "COMPLETE"}
+# {"order_id": 6, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 7130, "order_status": "COMPLETE"}
+# {"order_id": 7, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 4530, "order_status": "COMPLETE"}
+# {"order_id": 8, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 2911, "order_status": "PROCESSING"}
+# {"order_id": 9, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 5657, "order_status": "PROCESSING"}
+# {"order_id": 10, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 5648, "order_status": "PENDING_PAYMENT"}
+
+# -------------------------------------------
+# Batch: 2
+# -------------------------------------------
+# +---------------+-----+
+# |   order_status|total|
+# +---------------+-----+
+# |         CLOSED|    2|
+# |PENDING_PAYMENT|    4|
+# |     PROCESSING|    3|
+# |       COMPLETE|    7|
+# +---------------+-----+
