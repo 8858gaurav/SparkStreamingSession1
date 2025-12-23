@@ -46,6 +46,15 @@ if __name__ == '__main__':
 
     query.awaitTermination()
 
+# If you try to use Complete Mode while writing to Parquet or CSV file sinks in Spark Structured Streaming, the job will fail with an error.
+# Why doesn't it work?
+# Complete Mode is designed to output the entire result table every time a new micro-batch is processed.
+# File Sinks (Parquet/CSV): These are "append-only" by nature. To support Complete Mode, Spark would have to delete all existing files and rewrite the entire dataset into the folder every few seconds.
+# Safety: Spark avoids this because it would lead to massive data duplication and performance collapse as the dataset grows.
+
+# If you are writing raw data or transformed rows (without aggregations), use Append Mode. 
+# This is the native way Parquet and CSV sinks work; Spark simply adds new files to the directory for every batch.
+
 # {"order_id": 1, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 11599, "order_status": "CLOSED"}
 # {"order_id": 2, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 256, "order_status": "PENDING_PAYMENT"}
 # {"order_id": 3, "order_date": "2013-07-25 00:00:00.0", "order_customer_id": 12111, "order_status": "COMPLETE"}
