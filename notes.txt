@@ -10,7 +10,13 @@ updated result table will be written to the external storage.
 - Update Mode : UPSERT(Update+Insert) Only the updates and inserts
 made as per the new file added will reflect in the output. Only the rows
 that are updated or newly inserted will be written to the external
-storage.
+storage. 
+if the values (say A) present in previous batch data, but not present in the latest batch data. then A will not present in the 
+output of latest batch processing.
+if the values (say A) present in previous batch data, but also present in the latest batch data. then A will present with the updated 
+output of latest batch processing, means prev + latest data.
+if the values (say A) not present in previous batch data, but present in the latest batch data. then A will present in the 
+output of latest batch processing.
   
 - Append Mode : Append mode doesn’t work on Aggregation operations.
 Only the new records added will be shown.
