@@ -22,7 +22,13 @@ if __name__ == '__main__':
             .option("host", "localhost") \
             .option("port", 9988) \
             .load()
-    
+
+    print("lines.isStreaming", line.isStreaming) # lines.isStreaming True
+    print("lines.schema", line.schema) # lines.schema StructType([StructField('value', StringType(), True)])
+    print("lines.columns", line.columns)  # lines.columns ['value']
+    print("lines.dtypes", line.dtypes) # lines.dtypes [('value', 'string')]
+    print("lines", line) # lines DataFrame[value: string]
+    print("lines.value", line.value) # line.value Column<'value'>
 
 # 2. prcoessing logic
     words = lines.select(explode(split(lines.value, " ")).alias("word"))
